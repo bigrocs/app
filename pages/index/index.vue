@@ -15,14 +15,11 @@
 			}
 		},
 		onLoad() {
-			this.$u.api.Auth({
-				"user": {
-					"username": "admin",
-					"password": "abc.123."
-				}
-			}).then(res=>{
-				console.log(res);
-			})
+			if (!uni.getStorageSync('token')) { // 未登录先登录
+				this.$u.route({
+					url: 'pages/register/index'
+				})
+			}
 		},
 		methods: {
 
