@@ -9,6 +9,7 @@ App.mpType = 'app'
 import uView from 'uview-ui';
 Vue.use(uView);
 
+// Vue.$u.routeIntercept = "123"
 // 引入uView对小程序分享的mixin封装
 let mpShare = require('uview-ui/libs/mixin/mpShare.js');
 Vue.mixin(mpShare);
@@ -24,5 +25,8 @@ Vue.use(httpInterceptor, app);
 // http接口API抽离，免于写url或者一些固定的参数
 import httpApi from '@/common/http.api.js';
 Vue.use(httpApi, app);
+
+import routeIntercept from '@/common/route.interceptor.js';
+Vue.use(routeIntercept, app);
 
 app.$mount()
