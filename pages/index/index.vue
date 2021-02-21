@@ -15,14 +15,24 @@
 			}
 		},
 		onLoad() {
-			if (!uni.getStorageSync('token')) { // 未登录先登录
-				this.$u.route({
-					url: 'pages/register/index'
-				})
-			}
+			this.init()
 		},
 		methods: {
-
+			init() {
+				if (!uni.getStorageSync('token')) {
+					this.$store.dispatch('user/login').then(res=>{
+						if(res.socialiteUser.users.length===1){
+							uni.setStorageSync('token', res.socialiteUser.users[0].token)
+							this.$store.dispatch('user/getInfo')
+						}else{
+							// 活用户是进入选择登陆页面
+							console.log(123,res)
+						}
+					})
+				}else{
+					this.$store.dispatch('user/getInfo')
+				}
+			}
 		}
 	}
 </script>

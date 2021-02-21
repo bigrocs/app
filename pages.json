@@ -3,13 +3,13 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "新世纪"
+				"navigationBarTitleText": "首页"
 			}
 		},
 		{
-			"path": "pages/register/index",
+			"path": "pages/center/index",
 			"style": {
-				"navigationBarTitleText": "注册"
+				"navigationBarTitleText": "个人中心"
 			}
 		}
 	],
@@ -18,5 +18,28 @@
 		"navigationBarTitleText": "app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#C0C4CC",
+		"selectedColor": "#ff536f",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/tabbar/tab-home.png",
+				"selectedIconPath": "static/tabbar/tab-home-current.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/center/index",
+				"iconPath": "static/tabbar/tab-user.png",
+				"selectedIconPath": "static/tabbar/tab-user-current.png",
+				"text": "我"
+			}
+		]
+	},
+	"easycom": { 
+		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
 	}
 }

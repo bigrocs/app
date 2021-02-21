@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import App from './App'
+import store from './store'
 
 Vue.config.productionTip = false
+Vue.prototype.$store = store
 
 App.mpType = 'app'
 
@@ -9,12 +11,14 @@ App.mpType = 'app'
 import uView from 'uview-ui';
 Vue.use(uView);
 
-// Vue.$u.routeIntercept = "123"
+store.dispatch('setU', Vue.prototype.$u)
+
 // 引入uView对小程序分享的mixin封装
 let mpShare = require('uview-ui/libs/mixin/mpShare.js');
 Vue.mixin(mpShare);
 
 const app = new Vue({
+    store,
     ...App
 })
 
