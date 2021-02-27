@@ -70,7 +70,11 @@ const actions = {
           // 自动注册
           login.socialitesRegister('miniprogram_wechat').then(res => {
             if (res.valid) {
-              actions.login({ commit, state })
+              actions.login({ commit, state }).then(res => {
+                resolve(res)
+              }).catch(err => {
+                reject(err)
+              })
             } else {
               reject(res)
             }
