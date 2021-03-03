@@ -7,9 +7,15 @@
 			}
 		},
 		{
-			"path": "pages/center/index",
+			"path": "pages/my/index",
 			"style": {
 				"navigationBarTitleText": "个人中心"
+			}
+		},
+		{
+			"path": "pages/goods/item",
+			"style": {
+				"navigationBarTitleText": "商品详情"
 			}
 		}
 	],
@@ -18,26 +24,6 @@
 		"navigationBarTitleText": "app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
-	},
-	"tabBar": {
-		"color": "#C0C4CC",
-		"selectedColor": "#ff536f",
-		"borderStyle": "black",
-		"backgroundColor": "#ffffff",
-		"list": [
-			{
-				"pagePath": "pages/index/index",
-				"iconPath": "static/tabbar/tab-home.png",
-				"selectedIconPath": "static/tabbar/tab-home-current.png",
-				"text": "首页"
-			},
-			{
-				"pagePath": "pages/center/index",
-				"iconPath": "static/tabbar/tab-user.png",
-				"selectedIconPath": "static/tabbar/tab-user-current.png",
-				"text": "我"
-			}
-		]
 	},
 	"easycom": { 
 		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"

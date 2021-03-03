@@ -1,45 +1,46 @@
 <template>
-	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{title}}</text>
-		</view>
-	</view>
+<view>
+	<home v-if="PageCur=='home'"/>
+	<my v-if="PageCur=='my'"/>
+	<goods 
+		v-if="PageCur=='scan'"
+		:barCode="barCode"
+	/>
+	<tabbar
+		@NavChange="navChange"
+		@NavScanCodeChange="navScanCodeChange"
+	/>
+</view>
 </template>
 
 <script>
+	import tabbar from '@/components/tabbar.vue'
+	import home from '@/pages/home/index.vue'
+	import my from '@/pages/my/index.vue'
+	import goods from '@/pages/goods/item.vue'
 	export default {
+		components: { 
+			tabbar,
+			home,
+			my,
+			goods,
+		},
 		data() {
 			return {
-				title: 'Hello1'
+				PageCur:'home',
+				barCode:'',
 			}
 		},
 		onLoad() {
-			this.init()
 		},
 		methods: {
-			init() {
-				if (!uni.getStorageSync('token')) {
-					this.$store.dispatch('user/login').then(res=>{
-						if(res.socialiteUser.users.length===1){
-							uni.setStorageSync('token', res.socialiteUser.users[0].token)
-							this.userInfo()
-						}else{
-							// 活用户是进入选择登陆页面
-							console.log(123,res)
-						}
-					})
-				}else{
-					this.userInfo()
-				}
+			navChange(PageCur){
+				this.PageCur = PageCur
 			},
-			userInfo(){
-				this.$store.dispatch('user/getInfo').catch(err => {
-					uni.removeStorageSync('token'); // 删除token 重新获取
-					this.init()
-				})
+			navScanCodeChange(code){
+				this.barCode= code
 			}
-		}
+		},
 	}
 </script>
 

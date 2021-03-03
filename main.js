@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import store from './store'
+import * as filters from './filters' // global filters
 
 Vue.config.productionTip = false
 Vue.prototype.$store = store
@@ -13,6 +14,10 @@ Vue.use(uView);
 
 store.dispatch('setU', Vue.prototype.$u)
 
+// register global utility filters
+Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key])
+})
 // 引入uView对小程序分享的mixin封装
 let mpShare = require('uview-ui/libs/mixin/mpShare.js');
 Vue.mixin(mpShare);

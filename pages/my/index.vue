@@ -25,30 +25,35 @@
 		
 		<view class="u-m-t-20">
 			<u-cell-group>
-				<u-cell-item icon="rmb-circle" title="支付"></u-cell-item>
+				<u-cell-item icon="rmb-circle" :iconStyle="{color:'#F56C6C'}" title="收银"></u-cell-item>
 			</u-cell-group>
 		</view>
 		
 		<view class="u-m-t-20">
 			<u-cell-group>
-				<u-cell-item icon="star" title="收藏"></u-cell-item>
-				<u-cell-item icon="photo" title="相册"></u-cell-item>
-				<u-cell-item icon="coupon" title="卡券"></u-cell-item>
-				<u-cell-item icon="heart" :iconStyle="{color:'#000'}" title="关注"></u-cell-item>
+				<u-cell-item icon="star" :iconStyle="{color:'#ff6f00'}" title="报表"></u-cell-item>
+				<u-cell-item icon="photo" :iconStyle="{color:'#e17055'}" title="通知"></u-cell-item>
+				<u-cell-item icon="coupon" :iconStyle="{color:'#0fb9b1'}" title="商品"></u-cell-item>
+				<u-cell-item icon="heart" :iconStyle="{color:'#67C23A'}" title="盘点"></u-cell-item>
 			</u-cell-group>
 		</view>
 		
 		<view class="u-m-t-20">
 			<u-cell-group>
-				<u-cell-item icon="setting" title="设置"></u-cell-item>
+				<u-cell-item icon="setting" :iconStyle="{color:'#455A64'}" title="设置"></u-cell-item>
 			</u-cell-group>
 		</view>
+		<tabbar/>
 	</view>
 </template>
 
 <script>
 import {  mapGetters } from 'vuex'
+import tabbar from '@/components/tabbar.vue'
 export default {
+	components: { 
+		tabbar,
+	},
 	data() {
 		return {
 		}
