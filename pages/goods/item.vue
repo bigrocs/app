@@ -6,6 +6,7 @@
 					￥
 					<text class="num">{{goods.price}}</text>
 				</view>
+				<view class="type">进价: ￥ {{goods.buyPric}}</view>
 				<view class="type">部门: {{goods.deptCode}}</view>
 				<view class="type">PLU: {{goods.pluCode}}</view>
 			</view>
