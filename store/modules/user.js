@@ -71,11 +71,11 @@ const actions = {
       // #endif
     })
   },
-  register({ commit, state },mobile,captcha){
+  register({ commit, state },options){
     return new Promise((resolve, reject) => {
       const login = require('@/utils/login').default
       // #ifdef MP-WEIXIN
-      login.socialitesRegister('miniprogram_wechat', mobile, captcha).then(res => {
+      login.socialitesRegister('miniprogram_wechat', options.mobile, options.captcha).then(res => {
         resolve(res)
       }).catch(err => {
         reject(err)

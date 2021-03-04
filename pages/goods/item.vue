@@ -57,7 +57,7 @@ export default {
 					this.goods = res.item
 				}else{
 					this.$refs.uTips.show({
-                        duration: 2000,
+                        duration: 5000,
                         title: '未找到商品信息',
                         type: 'warning'
                     });
@@ -65,7 +65,7 @@ export default {
 			}).catch(err=>{
 				let message = err.data.detail?err.data.detail:err.data
 				this.$refs.uTips.show({
-                    duration: 2000,
+                    duration: 5000,
                     title: message,
                     type: 'error'
                 });

@@ -7,7 +7,10 @@ const install = (Vue, vm) => {
 	let Auth = (params = {}) => vm.$u.post('/user-api/auth/auth', params);
 	// 此处使用了传入的params参数，一切自定义即可
 	let UserInfo = (params = {}) => vm.$u.post('/user-api/users/info', params);
-
+	
+	// 信息管理
+	let SendCaptcha = (params = {}) => vm.$u.post('/message-api/message/sendCaptcha', { socialite: params }); 
+	
 	// 社会登录授权
 	let SocialitesAuth = (params = {}) => vm.$u.post('/socialite-api/socialites/auth', { socialite: params });
 	// 涩会登录注册
@@ -21,6 +24,8 @@ const install = (Vue, vm) => {
 	vm.$u.api = { 
 		Auth, 
 		UserInfo, 
+		
+		SendCaptcha,
 		
 		SocialitesAuth,
 		SocialitesRegister,

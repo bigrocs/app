@@ -3,7 +3,7 @@
 		<view class="top"></view>
 		<view class="content">
 			<view class="title">请登录系统</view>
-			<input focus class="u-border-bottom" type="number" v-model="mobile" placeholder="请输入手机号" />
+			<input focus class="u-border-bottom" type="number" v-model="mobile" maxlength="11" placeholder="请输入手机号" />
 			<view class="tips">未注册的手机号验证后自动创建系统账号</view>
             <!-- #ifdef MP-WEIXIN || MP-QQ || MP-BAIDU -->
 			<button open-type="getUserInfo" @getuserinfo="submit" :style="[inputStyle]" class="getCaptcha">获取短信验证码</button>

@@ -4,12 +4,13 @@
 			<view class="title">输入验证码</view>
 			<view class="tips">验证码已发送至 {{showMobile}}</view>
 			<u-message-input :focus="true" :value="value" @change="change" @finish="finish" mode="bottomLine" :maxlength="maxlength"></u-message-input>
-			<text :class="{ error: error }">验证码错误，请重新输入</text>
+			<text :class="{ error: error }">{{errorInfo}}</text>
 			<view class="captcha">
 				<text :class="{ noCaptcha: show }" @tap="noCaptcha">收不到验证码点这里</text>
 				<text :class="{ regain: !show }">{{ second }}秒后重新获取验证码</text>
 			</view>
 		</view>
+		<u-top-tips ref="uTips"></u-top-tips>
 	</view>
 </template>
 
@@ -23,7 +24,8 @@ export default {
 			value: '',
 			second: 60,
 			show: false,
-			error: false
+			error: false,
+			errorInfo:"",
 		};
 	},
 	computed: {},
@@ -45,17 +47,31 @@ export default {
 	methods: {
 		// 获取验证码
 		getCaptcha(){
-			console.log(this.mobile);
+			this.$u.api.SendCaptcha({
+				addressee:this.mobile,
+			}).then(res=>{
+				console.log(res);
+			}).catch(err=>{
+				this.show = true
+				this.error = true;
+				this.errorInfo = "验证码发送失败"
+				let message = err.data.detail?err.data.detail:err.data
+				this.$refs.uTips.show({
+                    duration: 5000,
+                    title: message,
+                    type: 'error'
+                });
+			})
 		},
 		// 收不到验证码选择时的选择
 		noCaptcha() {
 			uni.showActionSheet({
 				itemList: ['重新获取验证码'],
-				success (res) {
-					this.getCaptcha()
+				success:(res) =>{
 					console.log(res);
+					this.getCaptcha()
 				},
-				fail(err) {
+				fail:(err) =>{
 					console.error(err);
 				}
 			});
@@ -66,11 +82,12 @@ export default {
 		},
 		// 输入完验证码最后一位执行
 		finish(value) {
-			this.$store.dispatch('user/register',this.mobile, value).then(res=>{
+			this.$store.dispatch('user/register',{
+				mobile: this.mobile,
+				captcha: value
+			}).then(res=>{
 				console.log(res);
 			})
-            console.log(value);
-			// console.log('finish', value);
 		}
 	}
 };
