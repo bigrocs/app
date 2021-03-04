@@ -64,24 +64,19 @@ const actions = {
       const login = require('@/utils/login').default
       // #ifdef MP-WEIXIN
       login.MpWechat().then(res=>{
-        if (res.valid) {
-          resolve(res)
-        }else{
-          // 自动注册
-          login.socialitesRegister('miniprogram_wechat').then(res => {
-            if (res.valid) {
-              actions.login({ commit, state }).then(res => {
-                resolve(res)
-              }).catch(err => {
-                reject(err)
-              })
-            } else {
-              reject(res)
-            }
-          }).catch(err => {
-            reject(err)
-          })
-        }
+        resolve(res)
+      }).catch(err => {
+        reject(err)
+      })
+      // #endif
+    })
+  },
+  register({ commit, state },mobile,captcha){
+    return new Promise((resolve, reject) => {
+      const login = require('@/utils/login').default
+      // #ifdef MP-WEIXIN
+      login.socialitesRegister('miniprogram_wechat', mobile, captcha).then(res => {
+        resolve(res)
       }).catch(err => {
         reject(err)
       })

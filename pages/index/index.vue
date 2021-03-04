@@ -4,7 +4,7 @@
 	<my v-if="PageCur=='my'"/>
 	<goods 
 		v-if="PageCur=='scan'"
-		:barCode="barCode"
+		ref="goods"
 	/>
 	<tabbar
 		@NavChange="navChange"
@@ -32,13 +32,43 @@
 			}
 		},
 		onLoad() {
+			this.init()
 		},
 		methods: {
+			init() {
+				if (!uni.getStorageSync('token')) {
+					this.$store.dispatch('user/login').then(res=>{
+						if (res.valid) {
+							if(res.socialiteUser.users.length===1){
+								uni.setStorageSync('token', res.socialiteUser.users[0].token)
+								this.userInfo()
+							}else{
+								// 活用户是进入选择登陆页面
+								console.log(123,res)
+							}
+						}else{
+							// 返回信息成功但未找到绑定用户需要注册
+							this.$u.route("/pages/register/index");
+						}
+					})
+				}else{
+					this.userInfo()
+				}
+			},
+			userInfo(){
+				this.$store.dispatch('user/getInfo').catch(err => {
+					uni.removeStorageSync('token'); // 删除token 重新获取
+					this.init()
+				})
+			},
 			navChange(PageCur){
 				this.PageCur = PageCur
 			},
 			navScanCodeChange(code){
-				this.barCode= code
+				this.$refs.goods.GetGoods(code)
+			},
+			getUserInfo(res){
+				console.log(res);
 			}
 		},
 	}

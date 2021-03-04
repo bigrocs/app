@@ -57,18 +57,7 @@
                 uni.scanCode({
                     scanType: ['barCode'],
                     success:(res) =>{
-                        switch (res.scanType) {
-                            case 'EAN_13':
-                                this.$emit('NavScanCodeChange',res.result)
-                                break
-                            default:
-                                this.$refs.uTips.show({
-                                    duration: 2000,
-                                    title: '咱只支持EAN_13条形码',
-                                    type: 'error'
-                                });
-                                break;
-                        }
+                        this.$emit('NavScanCodeChange',res.result)
                     }
                 });
             }

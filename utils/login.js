@@ -32,7 +32,7 @@ const login = {
             })
         })
     },
-    socialitesRegister(driver){
+    socialitesRegister(driver, mobile, captcha){
         return new Promise(async(resolve, reject) => {
             let request = {
                 socialite: {
@@ -44,9 +44,11 @@ const login = {
                         {
                             name: '',
                             avatar: '',
+                            mobile: mobile,
                         }
                     ]
-                }
+                },
+                verify: captcha
             }
             let provider = ''
             switch (driver) {
@@ -57,7 +59,7 @@ const login = {
                     console.error('不支持此注册方式:', driver);
                     break;
             }
-            
+
             await this.uniLogin(provider).then(res => {
                 request.socialite.code = res.code
             }).catch(err => {
@@ -69,6 +71,7 @@ const login = {
             }).catch(err => {
                 reject(err)
             })
+            console.log(123456, request, provider);
             this.api.SocialitesRegister(request).then(res => {
                 resolve(res)
             }).catch(err => {
@@ -78,15 +81,23 @@ const login = {
     },
     uniGetUserInfo(driver) {
         return new Promise((resolve, reject) => {
-            uni.getUserInfo({
-                provider: driver,
-                success: res => {
-                    resolve(res)
+            uni.authorize({
+                scope: 'scope.userInfo',
+                success() {
+                    uni.getUserInfo({
+                        provider: driver,
+                        success: res => {
+                            resolve(res)
+                        },
+                        fail: err => {
+                            reject(err)
+                        }
+                    });
                 },
-                fail: err => {
+                fail(err){
                     reject(err)
                 }
-            });
+            })
         })
     },
     // uni登录

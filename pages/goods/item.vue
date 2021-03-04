@@ -39,12 +39,6 @@
 
 <script>
 export default {
-	props: {
-        barCode: {
-            type: String,
-            default: ''
-        }
-    },
 	data() {
 		return {
 			goods:{},
@@ -52,28 +46,11 @@ export default {
 	},
 	computed: {
 	},
-	onLoad(option) {
-		this.init(option);
-	},
-	watch: {
-		barCode: {
-			handler() {
-				this.getGoods()
-			},
-			deep: true
-		},
-	},
 	methods: {
-		init(option){
-			if (option.bar_code) {
-				this.barCode = option.bar_code
-			}
-			this.getGoods()
-		},
-		getGoods(){
+		GetGoods(barCode){
 			this.$u.api.GetGoods({
 				item:{
-					bar_code:this.barCode
+					bar_code:barCode
 				}
 			}).then(res=>{
 				if (res.valid) {
@@ -86,9 +63,10 @@ export default {
                     });
 				}
 			}).catch(err=>{
+				let message = err.data.detail?err.data.detail:err.data
 				this.$refs.uTips.show({
                     duration: 2000,
-                    title: '请求错误:'+err.data,
+                    title: message,
                     type: 'error'
                 });
 			})

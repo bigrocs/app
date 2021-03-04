@@ -35,7 +35,7 @@ Vue.use(httpInterceptor, app);
 import httpApi from '@/common/http.api.js';
 Vue.use(httpApi, app);
 
-import routeIntercept from '@/common/route.interceptor.js';
-Vue.use(routeIntercept, app);
+// import routeIntercept from '@/common/route.interceptor.js';
+// Vue.use(routeIntercept, app);
 
 app.$mount()

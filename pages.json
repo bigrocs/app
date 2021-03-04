@@ -5,6 +5,18 @@
 			"style": {
 				"navigationBarTitleText": "新世纪"
 			}
+		},
+		{
+			"path": "pages/register/index",
+			"style": {
+				"navigationBarTitleText": "注册验证码"
+			}
+		},
+		{
+			"path": "pages/register/code",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
 		}
 	],
 	"globalStyle": {
