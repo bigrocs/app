@@ -49,8 +49,6 @@ export default {
 		getCaptcha(){
 			this.$u.api.SendCaptcha({
 				addressee:this.mobile,
-			}).then(res=>{
-				console.log(res);
 			}).catch(err=>{
 				this.show = true
 				this.error = true;
@@ -68,7 +66,6 @@ export default {
 			uni.showActionSheet({
 				itemList: ['重新获取验证码'],
 				success:(res) =>{
-					console.log(res);
 					this.getCaptcha()
 				},
 				fail:(err) =>{
@@ -86,7 +83,12 @@ export default {
 				mobile: this.mobile,
 				captcha: value
 			}).then(res=>{
-				console.log(res);
+				if (res.valid) {
+					this.$u.route({
+						type:'redirectTo',
+						url: 'pages/index/index'
+					})
+				}
 			})
 		}
 	}

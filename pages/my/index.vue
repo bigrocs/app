@@ -43,6 +43,9 @@
 				<u-cell-item icon="setting" :iconStyle="{color:'#455A64'}" title="设置"></u-cell-item>
 			</u-cell-group>
 		</view>
+		<view class="u-m-t-20">
+			<button @tap="outLogin">退出登录</button>
+		</view>
 		<tabbar/>
 	</view>
 </template>
@@ -69,7 +72,13 @@ export default {
 		
 	},
 	methods: {
-		
+		outLogin(){
+			uni.removeStorageSync("token")
+			this.$u.route({
+				type:'redirectTo',
+				url: 'pages/index/index'
+			})
+		}
 	}
 }
 </script>

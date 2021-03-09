@@ -56,7 +56,10 @@ export default {
     mounted() {
     },
 	methods: {
-		submit() {
+		submit(res) {
+			// #ifdef MP-WEIXIN || MP-QQ || MP-BAIDU 
+			uni.setStorageSync('userInfo',res.detail.userInfo)
+			// #endif
 			if(this.$u.test.mobile(this.mobile)) {
 				this.$u.route({
 					url: 'pages/register/code?mobile='+this.mobile

@@ -9,7 +9,7 @@ const install = (Vue, vm) => {
 	let UserInfo = (params = {}) => vm.$u.post('/user-api/users/info', params);
 	
 	// 信息管理
-	let SendCaptcha = (params = {}) => vm.$u.post('/message-api/message/sendCaptcha', { socialite: params }); 
+	let SendCaptcha = (params = {}) => vm.$u.post('/message-api/message/sendCaptcha', params); 
 	
 	// 社会登录授权
 	let SocialitesAuth = (params = {}) => vm.$u.post('/socialite-api/socialites/auth', { socialite: params });
