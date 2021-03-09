@@ -1,19 +1,36 @@
 <template>
 <view>
-	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">欢迎使用新世纪管理系统</text>
+	<view>
+		<department 
+			v-if="roles.indexOf('root')>-1||roles.indexOf('manager')>-1||roles.indexOf('finance')>-1"
+		/>
+		<view v-else  class="content">
+			<image class="logo" src="/static/logo.png"></image>
+			<view class="text-area">
+				<text class="title">欢迎使用新世纪管理系统</text>
+			</view>
 		</view>
 	</view>
 </view>
 </template>
 
 <script>
+	import {  mapGetters } from 'vuex'
+	import department from '@/components/report/department.vue'
 	export default {
+		components: { 
+			department,
+		},	
+		computed: {
+		...mapGetters([
+			'roles',
+			]),
+		},
 		data() {
 			return {
 			}
+		},
+		mounted() {
 		},
 	}
 </script>

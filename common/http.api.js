@@ -17,8 +17,9 @@ const install = (Vue, vm) => {
 	let SocialitesRegister = (params = {}) => vm.$u.post('/socialite-api/socialites/register', params);
 
 	/**
-	 * goods
+	 * sql2000
 	 */
+	let DepartmentSale = (params = {}) => vm.$u.post('/sql2000-api/department/sale', params);
 	let GetGoods = (params = {}) => vm.$u.post('/sql2000-api/items/get', params);
 	// 将各个定义的接口名称，统一放进对象挂载到vm.$u.api(因为vm就是this，也即this.$u.api)下
 	vm.$u.api = { 
@@ -30,6 +31,7 @@ const install = (Vue, vm) => {
 		SocialitesAuth,
 		SocialitesRegister,
 
+		DepartmentSale,
 		GetGoods
 	};
 }
