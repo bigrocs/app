@@ -1,13 +1,6 @@
 <template>
 <view>
 	<view class="solids-bottom padding-xs flex align-center">
-		<view class="flex-sub text-center">
-			<view class="solid-bottom text-xl padding">
-				<text class="text-black text-bold">日期: {{ date | parseTime('{y}-{m}-{d} 星期{a}') }}</text>
-			</view>
-		</view>
-	</view>
-	<view class="solids-bottom padding-xs flex align-center">
 		<view class="padding">合计:</view>
 		<view class="flex-sub text-center">
 			<view class="solid-bottom text-xxl padding">
@@ -55,6 +48,19 @@
 			</view>
 		</view>
 	</view>
+	<u-calendar v-model="show" ref="calendar" @change="change" :mode="mode"
+		:start-text="startText" :end-text="endText" :range-color="rangeColor"
+		:range-bg-color="rangeBgColor" :active-bg-color="activeBgColor" :btn-type="btnType"
+	>
+	</u-calendar>
+
+	<view class="solids-bottom padding-xs flex align-center" @click="showCalendar">
+		<view class="flex-sub text-center">
+			<view class="solid-bottom text-xl padding">
+				<text class="text-black text-bold">日期: {{result}}</text>
+			</view>
+		</view>
+	</view>
 	<u-top-tips ref="uTips"></u-top-tips>
 </view>
 </template>
@@ -64,20 +70,31 @@
 	export default {
 		data() {
 			return {
+				show:false,
+				result:"请选择日期",
+				mode: 'range',
+				startText: '开始',
+				endText: '结束',
+				rangeColor: '#2979ff',
+				rangeBgColor: 'rgba(41,121,255,0.13)',
+				activeBgColor: '#2979ff',
+				btnType: 'primary',
+				
                 sale:0.00,
 				sale10:0.00,
 				sale11:0.00,
 				sale2:0.00,
 				sale3:0.00,
-				date: new Date()
+				startDate:this.today(-3600 * 1000 * 24),
+				endDate:this.today(-1),
 			}
 		},
 		created() {
-			this.init()	
+			this.result = parseTime(this.startDate,"{y}-{m}-{d}") +" - "+ parseTime(this.endDate,"{y}-{m}-{d}")
+			this.getData()	
 		},
 		methods: {
-			init(){
-				this.date = this.today(-3600 * 1000 * 24)
+			getData(){
 				this.getSale()
 				this.getSale10()
 				this.getSale11()
@@ -86,8 +103,8 @@
 			},   
 			getSale(){
 				this.$u.api.DepartmentSale({
-					startDate: parseTime(this.today(-3600 * 1000 * 24),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
-					endDate:  parseTime(this.today(),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					startDate: parseTime(this.startDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					endDate:  parseTime(this.endDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					// where:"DepCode> 100 AND DepCode< 200",
 				}).then(res=>{
 					this.sale = res.total
@@ -102,8 +119,8 @@
 			},
 			getSale10(){
 				this.$u.api.DepartmentSale({
-					startDate: parseTime(this.today(-3600 * 1000 * 24),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
-					endDate:  parseTime(this.today(),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					startDate: parseTime(this.startDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					endDate:  parseTime(this.endDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					where:"DepCode> 100 AND DepCode< 200",
 				}).then(res=>{
 					this.sale10 = res.total
@@ -118,8 +135,8 @@
 			},
 			getSale11(){
 				this.$u.api.DepartmentSale({
-					startDate: parseTime(this.today(-3600 * 1000 * 24),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
-					endDate:  parseTime(this.today(),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					startDate: parseTime(this.startDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					endDate:  parseTime(this.endDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					where:"DepCode> 600 AND DepCode< 700",
 				}).then(res=>{
 					this.sale11 = res.total
@@ -134,8 +151,8 @@
 			},
 			getSale2(){
 				this.$u.api.DepartmentSale({
-					startDate: parseTime(this.today(-3600 * 1000 * 24),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
-					endDate:  parseTime(this.today(),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					startDate: parseTime(this.startDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					endDate:  parseTime(this.endDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					where:"DepCode> 900 AND DepCode< 1000",
 				}).then(res=>{
 					this.sale2 = res.total
@@ -150,8 +167,8 @@
 			},
 			getSale3(){
 				this.$u.api.DepartmentSale({
-					startDate: parseTime(this.today(-3600 * 1000 * 24),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
-					endDate:  parseTime(this.today(),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					startDate: parseTime(this.startDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					endDate:  parseTime(this.endDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					where:"DepCode> 300 AND DepCode< 400",
 				}).then(res=>{
 					this.sale3 = res.total
@@ -171,6 +188,15 @@
 			// 获取选择时间当前时区0点
 			dateTime() {
 				return new Date(new Date().toLocaleDateString()).getTime()
+			},
+			showCalendar(){
+				this.show = true
+			},
+			change(e) {
+				this.result = e.startDate + " - " + e.endDate;
+				this.startDate = new Date(new Date(e.startDate).toLocaleDateString())
+				this.endDate = new Date(new Date(new Date(e.endDate).toLocaleDateString()).getTime()+3600 * 1000 * 24-1)
+				this.getData()
 			}
 		},
 	}
