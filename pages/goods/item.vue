@@ -6,7 +6,7 @@
 					￥
 					<text class="num">{{goods.price}}</text>
 				</view>
-				<view class="type" v-if="goods.buyPrice">进价: ￥ {{goods.buyPrice}}</view>
+				<view class="type" v-if="(roles.indexOf('root')>-1||roles.indexOf('manager')>-1||roles.indexOf('finance')>-1||roles.indexOf('store_keeper')>-1||roles.indexOf('group')>-1)&&goods.buyPrice">进价: ￥ {{goods.buyPrice}}</view>
 				<view class="type">部门: {{goods.deptCode}}</view>
 				<view class="type">PLU: {{goods.pluCode}}</view>
 			</view>
@@ -33,11 +33,21 @@
 				</view>
 			</view>
 		</view>
+		<view v-if="(roles.indexOf('root')>-1||roles.indexOf('manager')>-1||roles.indexOf('finance')>-1||roles.indexOf('store_keeper')>-1)&&Object.keys(goods.stock.supplier).length > 0" class="supplier">
+			<view>供应商库存: </view>
+			<view v-for="(item, index) in goods.stock.supplier" :key="index"  class="item">
+				<view class="bottom">
+					<span class="left">[{{item.code}}] {{item.name}}</span>
+					<span class="right">数量: {{item.number}}</span>
+				</view>
+			</view>	
+		</view>
 		<u-top-tips ref="uTips"></u-top-tips>
 	</view>
 </template>
 
 <script>
+import {  mapGetters } from 'vuex'
 export default {
 	data() {
 		return {
@@ -45,6 +55,10 @@ export default {
 		}
 	},
 	computed: {
+		...mapGetters([
+			'roles',
+			]),
+		}
 	},
 	methods: {
 		GetGoods(barCode){
@@ -81,6 +95,25 @@ export default {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+}
+
+.supplier{
+	width: 700rpx;
+	padding: 40rpx;
+	height: auto;
+	background-color: #ffffff;
+	.item{
+		display: flex;
+		border-bottom: 2rpx dashed $u-border-color;
+		.left {
+			padding: 0 30rpx;
+			text-align: center;
+		}
+		.right {
+			padding: 0 30rpx;
+			text-align: center;
+		}
+	}
 }
 .jingdong {
 	margin-top: 40rpx;
