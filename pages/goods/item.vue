@@ -57,8 +57,7 @@ export default {
 	computed: {
 		...mapGetters([
 			'roles',
-			]),
-		}
+		]),
 	},
 	methods: {
 		GetGoods(barCode){
