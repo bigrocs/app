@@ -70,32 +70,37 @@ export default {
 	},
 	methods: {
 		async GetGoods(barCode){
-			await this.chackLocation().then(res=>{
-				this.latitude= res.latitude
-				this.longitude= res.longitude
-				if (res.latitude>37.141&&res.latitude<37.143&&res.longitude>118.131&&res.longitude<118.133) {
-					this.branch = 'boxing'
-					this.branchName = '博兴'
+			if (!(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1||this.roles.indexOf('group')>-1)) {
+				await this.chackLocation().then(res=>{
+					this.latitude= res.latitude
+					this.longitude= res.longitude
+					if (res.latitude>37.141&&res.latitude<37.143&&res.longitude>118.131&&res.longitude<118.133) {
+						this.branch = 'boxing'
+						this.branchName = '博兴'
+					}
+					if (res.latitude>37.261&&res.latitude<37.263&&res.longitude>118.221&&res.longitude<118.223) {
+						this.branch = 'chunliang'
+						this.branchName = '纯梁'
+					}
+				}).catch(err=>{
+					this.$refs.uTips.show({
+						duration: 5000,
+						title: "获取位置失败",
+						type: 'error'
+					});
+					return
+				})
+				if (this.branch == ''){
+					this.$refs.uTips.show({
+						duration: 5000,
+						title: "未在门店内无法使用",
+						type: 'error'
+					});
+					return 
 				}
-				if (res.latitude>37.261&&res.latitude<37.263&&res.longitude>118.221&&res.longitude<118.223) {
-					this.branch = 'chunliang'
-					this.branchName = '纯梁'
-				}
-			}).catch(err=>{
-				this.$refs.uTips.show({
-                    duration: 5000,
-                    title: "获取位置失败",
-                    type: 'error'
-                });
-				return
-			})
-			if (this.branch == '' && !(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1||this.roles.indexOf('group')>-1)){
-				this.$refs.uTips.show({
-                    duration: 5000,
-                    title: "未在门店内无法使用",
-                    type: 'error'
-                });
-				return 
+			}else{
+				this.branch = 'boxing'
+				this.branchName = '博兴'
 			}
 			await this.$u.api.GetGoods({
 				item:{
