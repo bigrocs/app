@@ -6,7 +6,7 @@
 					￥
 					<text class="num">{{goods.price}}</text>
 				</view>
-				<view class="type" v-if="(roles.indexOf('root')>-1||roles.indexOf('manager')>-1||roles.indexOf('finance')>-1||roles.indexOf('store_keeper')>-1||roles.indexOf('group')>-1)&&goods.buyPrice">进价: ￥ {{goods.buyPrice}}</view>
+				<view class="type" v-if="(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1||this.roles.indexOf('group')>-1)&&goods.buyPrice">进价: ￥ {{goods.buyPrice}}</view>
 				<view class="type">部门: {{goods.deptCode}}</view>
 				<view class="type">PLU: {{goods.pluCode}}</view>
 			</view>
@@ -33,7 +33,7 @@
 				</view>
 			</view>
 		</view>
-		<view v-if="(roles.indexOf('root')>-1||roles.indexOf('manager')>-1||roles.indexOf('finance')>-1||roles.indexOf('store_keeper')>-1)&&Object.keys(goods.stock.supplier).length > 0" class="supplier">
+		<view v-if="(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1)&&goods.hasOwnProperty('stock')" class="supplier">
 			<view>供应商库存: </view>
 			<view v-for="(item, index) in goods.stock.supplier" :key="index"  class="item">
 				<view class="bottom">
@@ -41,6 +41,10 @@
 					<span class="right">数量: {{item.number}}</span>
 				</view>
 			</view>	
+		</view>
+		<view class="bottom">
+			<view>门店: {{branchName}}</view>
+			<view>位置: 纬度[{{latitude}}] 经度[{{longitude}}]</view>
 		</view>
 		<u-top-tips ref="uTips"></u-top-tips>
 	</view>
@@ -51,7 +55,12 @@ import {  mapGetters } from 'vuex'
 export default {
 	data() {
 		return {
-			goods:{},
+			goods:{
+			},
+			branch:'',
+			branchName:'',
+			latitude:'',
+			longitude:'',
 		}
 	},
 	computed: {
@@ -60,30 +69,66 @@ export default {
 		]),
 	},
 	methods: {
-		GetGoods(barCode){
-			this.$u.api.GetGoods({
+		async GetGoods(barCode){
+			await this.chackLocation().then(res=>{
+				this.latitude= res.latitude
+				this.longitude= res.longitude
+				if (res.latitude>37.141&&res.latitude<37.143&&res.longitude>118.131&&res.longitude<118.133) {
+					this.branch = 'boxing'
+					this.branchName = '博兴'
+				}
+			}).catch(err=>{
+				this.$refs.uTips.show({
+                    duration: 5000,
+                    title: "获取位置失败",
+                    type: 'error'
+                });
+				return
+			})
+			if (this.branch == '' && !(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1||this.roles.indexOf('group')>-1)){
+				this.$refs.uTips.show({
+                    duration: 5000,
+                    title: "未在门店内无法使用",
+                    type: 'error'
+                });
+				return 
+			}
+			await this.$u.api.GetGoods({
 				item:{
 					bar_code:barCode
-				}
+				},
+				database: this.branch
 			}).then(res=>{
 				if (res.valid) {
 					this.goods = res.item
 				}else{
 					this.$refs.uTips.show({
-                        duration: 5000,
-                        title: '未找到商品信息',
-                        type: 'warning'
-                    });
+						duration: 5000,
+						title: '未找到商品信息',
+						type: 'warning'
+					});
 				}
 			}).catch(err=>{
 				let message = err.data.detail?err.data.detail:err.data
 				this.$refs.uTips.show({
-                    duration: 5000,
-                    title: message,
-                    type: 'error'
-                });
+					duration: 5000,
+					title: message,
+					type: 'error'
+				});
 			})
-		}
+		},
+		chackLocation(){
+			return new Promise((resolve, reject) => {
+				uni.getLocation({
+					success(res) {
+						resolve(res)
+					},
+					fail(err){
+						reject(err)
+					}
+				});
+			})
+		},
 	}
 }
 </script>
@@ -95,7 +140,16 @@ export default {
 	align-items: center;
 	justify-content: center;
 }
-
+.bottom{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 700rpx;
+	margin-top: 40rpx;
+	padding: 40rpx;
+	background-color: #ffffff;
+}
 .supplier{
 	width: 700rpx;
 	padding: 40rpx;

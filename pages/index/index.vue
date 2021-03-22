@@ -67,9 +67,6 @@
 			navScanCodeChange(code){
 				this.$refs.goods.GetGoods(code)
 			},
-			getUserInfo(res){
-				console.log(res);
-			}
 		},
 	}
 </script>

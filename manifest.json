@@ -59,7 +59,12 @@
             "postcss" : true,
             "es6" : false
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "通过位置获取最近店面"
+            }
+        }
     },
     "mp-alipay" : {
         "usingComponents" : true
