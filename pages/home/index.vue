@@ -10,8 +10,6 @@
 				<text class="title">欢迎使用新世纪管理系统</text>
 			</view>
 		</view>
-		{{data.latitude}}
-		{{data.longitude}}
 	</view>
 </view>
 </template>
@@ -30,15 +28,9 @@
 		},
 		data() {
 			return {
-				data:{},
 			}
 		},
 		mounted() {
-			uni.getLocation({
-				success:(res)=> {
-					this.data = res
-				},
-			});
 		},
 	}
 </script>

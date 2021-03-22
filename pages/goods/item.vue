@@ -57,7 +57,7 @@ export default {
 		return {
 			goods:{
 			},
-			branch:'',
+			branch:uni.getStorageSync('branch'),
 			branchName:'',
 			latitude:'',
 			longitude:'',
@@ -70,17 +70,19 @@ export default {
 	},
 	methods: {
 		async GetGoods(barCode){
-			if (!(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1||this.roles.indexOf('group')>-1)) {
+			if (this.branch == ''|| !(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1||this.roles.indexOf('group')>-1)) {
 				await this.chackLocation().then(res=>{
 					this.latitude= res.latitude
 					this.longitude= res.longitude
 					if (res.latitude>37.141&&res.latitude<37.143&&res.longitude>118.131&&res.longitude<118.133) {
 						this.branch = 'boxing'
 						this.branchName = '博兴'
+						uni.setStorageSync('branch',this.branch)
 					}
 					if (res.latitude>37.253&&res.latitude<37.258&&res.longitude>118.210&&res.longitude<118.218) {
 						this.branch = 'chunliang'
 						this.branchName = '纯梁'
+						uni.setStorageSync('branch',this.branch)
 					}
 				}).catch(err=>{
 					this.$refs.uTips.show({
@@ -98,9 +100,20 @@ export default {
 					});
 					return 
 				}
-			}else{
-				this.branch = 'boxing'
-				this.branchName = '博兴'
+			}
+			switch (this.branch) {
+				case 'boxing':
+					this.branch = 'boxing'
+					this.branchName = '博兴'
+					break;
+				case 'chunliang':
+					this.branch = 'chunliang'
+					this.branchName = '纯梁'
+					break;
+				default:
+					this.branch = 'boxing'
+					this.branchName = '博兴'
+					break;
 			}
 			await this.$u.api.GetGoods({
 				item:{
