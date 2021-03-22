@@ -78,7 +78,7 @@ export default {
 						this.branch = 'boxing'
 						this.branchName = '博兴'
 					}
-					if (res.latitude>37.261&&res.latitude<37.263&&res.longitude>118.221&&res.longitude<118.223) {
+					if (res.latitude>37.253&&res.latitude<37.258&&res.longitude>118.210&&res.longitude<118.218) {
 						this.branch = 'chunliang'
 						this.branchName = '纯梁'
 					}
