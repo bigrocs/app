@@ -42,7 +42,7 @@
 				</view>
 			</view>	
 		</view>
-		<view class="bottom">
+		<view class="bot">
 			<view>门店: {{branchName}}</view>
 			<view>位置: 纬度[{{latitude}}] 经度[{{longitude}}]</view>
 		</view>
@@ -76,6 +76,10 @@ export default {
 				if (res.latitude>37.141&&res.latitude<37.143&&res.longitude>118.131&&res.longitude<118.133) {
 					this.branch = 'boxing'
 					this.branchName = '博兴'
+				}
+				if (res.latitude>37.261&&res.latitude<37.263&&res.longitude>118.221&&res.longitude<118.223) {
+					this.branch = 'chunliang'
+					this.branchName = '纯梁'
 				}
 			}).catch(err=>{
 				this.$refs.uTips.show({
@@ -140,7 +144,7 @@ export default {
 	align-items: center;
 	justify-content: center;
 }
-.bottom{
+.bot{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
