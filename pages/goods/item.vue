@@ -33,18 +33,27 @@
 				</view>
 			</view>
 		</view>
-		<view v-if="(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1)&&goods.hasOwnProperty('stock')" class="supplier">
+		<view v-if="(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1||this.roles.indexOf('group')>-1)&&goods.hasOwnProperty('stock')" class="supplier">
 			<view>供应商库存: </view>
 			<view v-for="(item, index) in goods.stock.supplier" :key="index"  class="item">
 				<view class="bottom">
 					<span class="left">[{{item.code}}] {{item.name}}</span>
-					<span class="right">数量: {{item.number}}</span>
+					<span class="right">数量: 
+						{{ (this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1)?
+							item.number:
+							(Number(item.number)>0?"有货":item.number)
+						}}
+					</span>
 				</view>
 			</view>	
 		</view>
 		<view class="bot">
 			<view>门店: {{branchName}}</view>
 			<view>位置: 纬度[{{latitude}}] 经度[{{longitude}}]</view>
+			<view class="query">
+				<input focus class="u-border-bottom" type="number" v-model="code" maxlength="11" placeholder="请输入PLU或条码BAR" />
+				<button class="u-border-button" @tap="handlerQuery">查询</button>
+			</view>
 		</view>
 		<u-top-tips ref="uTips"></u-top-tips>
 	</view>
@@ -52,6 +61,7 @@
 
 <script>
 import {  mapGetters } from 'vuex'
+import { EAN } from '@/utils/barcode'
 export default {
 	data() {
 		return {
@@ -61,6 +71,7 @@ export default {
 			branchName:'',
 			latitude:'',
 			longitude:'',
+			code:'',
 		}
 	},
 	computed: {
@@ -69,7 +80,7 @@ export default {
 		]),
 	},
 	methods: {
-		async GetGoods(barCode){
+		async GetGoods(code){
 			if (this.branch == ''|| !(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1||this.roles.indexOf('group')>-1)) {
 				await this.chackLocation().then(res=>{
 					this.latitude= res.latitude
@@ -115,10 +126,9 @@ export default {
 					this.branchName = '博兴'
 					break;
 			}
+			let item = this.checkCode(code)
 			await this.$u.api.GetGoods({
-				item:{
-					bar_code:barCode
-				},
+				item:item,
 				database: this.branch
 			}).then(res=>{
 				if (res.valid) {
@@ -138,6 +148,27 @@ export default {
 					type: 'error'
 				});
 			})
+		},
+		handlerQuery(){
+			this.GetGoods(this.code)
+			this.code = ''
+		},
+		checkCode(code){
+				const res = {
+					pluCode:'',
+					barCode:'',
+				}
+				const barcode = EAN.Decode(code)
+				if (barcode.check) { // 校验条码
+					if (barcode.custom) { // 是否为自定义条码(称重类)
+						res.pluCode = barcode.goods.pluCode
+					}else{
+						res.barCode = code
+					}
+				}else{
+					res.pluCode = code
+				}
+				return res
 		},
 		chackLocation(){
 			return new Promise((resolve, reject) => {
@@ -171,6 +202,13 @@ export default {
 	margin-top: 40rpx;
 	padding: 40rpx;
 	background-color: #ffffff;
+	.query{
+		margin-top: 40rpx;
+		.u-border-button{
+			margin-top: 20rpx;
+			width: 660rpx;
+		}
+	}
 }
 .supplier{
 	width: 700rpx;
