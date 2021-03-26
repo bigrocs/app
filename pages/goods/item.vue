@@ -16,7 +16,7 @@
 						<text class="tag">{{goods.spec}}</text>
 						<text>{{goods.name}}</text>
 					</view>
-					<view class="bottom">
+					<view v-if="goods.barCode" class="bottom">
 						<view class="date u-line-1">条码: {{goods.barCode}}</view>
 						<!-- <view class="immediate-use">立即使用</view> -->
 					</view>
