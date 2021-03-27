@@ -106,6 +106,7 @@
 					startDate: parseTime(this.startDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					endDate:  parseTime(this.endDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					// where:"DepCode> 100 AND DepCode< 200",
+					database: 'boxing'
 				}).then(res=>{
 					this.sale = res.total
 				}).catch(err=>{
@@ -122,6 +123,7 @@
 					startDate: parseTime(this.startDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					endDate:  parseTime(this.endDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					where:"DepCode> 100 AND DepCode< 200",
+					database: 'boxing',
 				}).then(res=>{
 					this.sale10 = res.total
 				}).catch(err=>{
@@ -138,6 +140,7 @@
 					startDate: parseTime(this.startDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					endDate:  parseTime(this.endDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					where:"DepCode> 600 AND DepCode< 700",
+					database: 'boxing',
 				}).then(res=>{
 					this.sale11 = res.total
 				}).catch(err=>{
@@ -154,6 +157,7 @@
 					startDate: parseTime(this.startDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					endDate:  parseTime(this.endDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					where:"DepCode> 900 AND DepCode< 1000",
+					database: 'boxing',
 				}).then(res=>{
 					this.sale2 = res.total
 				}).catch(err=>{
@@ -170,6 +174,7 @@
 					startDate: parseTime(this.startDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					endDate:  parseTime(this.endDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					where:"DepCode> 300 AND DepCode< 400",
+					database: 'boxing',
 				}).then(res=>{
 					this.sale3 = res.total
 				}).catch(err=>{
