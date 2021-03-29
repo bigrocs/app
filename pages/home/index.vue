@@ -7,12 +7,12 @@
 			</view>
 		</view>
 		<boxing 
-			v-if="branch==='boxing'&&(roles.indexOf('root')>-1||roles.indexOf('manager')>-1||roles.indexOf('finance')>-1)"
+			v-if="branch==='boxing'&&(roles.indexOf('root')>-1||roles.indexOf('manager')>-1)"
 		/>
 		<chunliang 
-			v-if="branch==='chunliang'&&(roles.indexOf('root')>-1||roles.indexOf('manager')>-1||roles.indexOf('finance')>-1)"
+			v-if="branch==='chunliang'&&(roles.indexOf('root')>-1||roles.indexOf('manager')>-1)"
 		/>
-		<view v-if="!(roles.indexOf('root')>-1||roles.indexOf('manager')>-1||roles.indexOf('finance')>-1)"  class="content">
+		<view v-if="!(roles.indexOf('root')>-1||roles.indexOf('manager')>-1)"  class="content">
 			<image class="logo" src="/static/logo.png"></image>
 			<view class="text-area">
 				<text class="title">欢迎使用新世纪管理系统</text>
