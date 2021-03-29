@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<view class="u-m-t-20">
-			<button @tap="handlerBranch('boxing')">博兴店</button>
-            <button @tap="handlerBranch('chunliang')">纯梁店</button>
+			<button :type="branch==='boxing'?'primary':'default'" @tap="handlerBranch('boxing')">博兴店</button>
+            <button  :type="branch==='chunliang'?'primary':'default'" @tap="handlerBranch('chunliang')">纯梁店</button>
 		</view>
 	</view>
 </template>
@@ -11,6 +11,7 @@
 export default {
 	data() {
 		return {
+			branch: uni.getStorageSync('branch'),
 		}
 	},
 	computed: {

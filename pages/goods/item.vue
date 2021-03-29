@@ -6,7 +6,7 @@
 					￥
 					<text class="num">{{goods.price}}</text>
 				</view>
-				<view class="type" v-if="(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1||this.roles.indexOf('group')>-1)&&goods.buyPrice">进价: ￥ {{goods.buyPrice}}</view>
+				<view class="type" v-if="(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1)&&goods.buyPrice">进价: ￥ {{goods.buyPrice}}</view>
 				<view class="type">部门: {{goods.deptCode}}</view>
 				<view class="type">PLU: {{goods.pluCode}}</view>
 			</view>
@@ -51,7 +51,7 @@
 			<view>门店: {{branchName}}</view>
 			<view>位置: 纬度[{{latitude}}] 经度[{{longitude}}]</view>
 			<view class="query">
-				<input focus class="u-border-bottom" type="number" v-model="code" maxlength="11" placeholder="请输入PLU或条码BAR" />
+				<input focus class="u-border-bottom" type="number" v-model="code" maxlength="13" placeholder="请输入PLU或条码BAR" />
 				<button class="u-border-button" @tap="handlerQuery">查询</button>
 			</view>
 		</view>

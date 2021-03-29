@@ -7,6 +7,7 @@ const install = (Vue, vm) => {
 	let Auth = (params = {}) => vm.$u.post('/user-api/auth/auth', params);
 	// 此处使用了传入的params参数，一切自定义即可
 	let UserInfo = (params = {}) => vm.$u.post('/user-api/users/info', params);
+	let UserSelfUpdate = (params = {}) => vm.$u.post('/user-api/users/selfUpdate', params);
 	
 	// 信息管理
 	let SendCaptcha = (params = {}) => vm.$u.post('/message-api/message/sendCaptcha', params); 
@@ -25,6 +26,7 @@ const install = (Vue, vm) => {
 	vm.$u.api = { 
 		Auth, 
 		UserInfo, 
+		UserSelfUpdate,
 		
 		SendCaptcha,
 		

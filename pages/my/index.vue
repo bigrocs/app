@@ -13,7 +13,13 @@
 					<u-avatar :src="avatar" size="140"></u-avatar>
 				</view>
 				<view class="u-flex-1">
-					<view class="u-font-18 u-p-b-20">{{name}}</view>
+					<view v-if="isSetName" class="u-font-18 u-p-b-20">
+						<u-form-item prop="code">
+							<u-input focus placeholder="请输入昵称" v-model="setName" type="text"></u-input>
+							<u-button slot="right" type="success" size="mini" @click="setNamehandler">保存</u-button>
+						</u-form-item>
+					</view>
+					<view v-else class="u-font-18 u-p-b-20" @click="isSetName=true">{{name}}</view>
 					<view class="u-font-14 u-tips-color">账号: {{username}}</view>
 				</view>
 				<view class="u-m-l-10 u-p-10">
@@ -63,6 +69,8 @@ export default {
 	data() {
 		return {
 			PageCur:'home',
+			isSetName:false,
+			setName:''
 		}
 	},
 	computed: {
@@ -86,6 +94,18 @@ export default {
 		navChange(PageCur){
 			this.PageCur = PageCur
 		},
+		setNamehandler(){
+			this.$u.api.UserSelfUpdate({
+				user:{
+					name:this.setName,
+				}
+			}).then(res=>{
+				if (res.valid) {
+					this.isSetName = false
+					this.$store.dispatch('user/getInfo')
+				}
+			})
+		}
 	}
 }
 </script>
