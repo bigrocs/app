@@ -6,7 +6,7 @@
 					￥
 					<text class="num">{{goods.price}}</text>
 				</view>
-				<view class="type" v-if="(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1)&&goods.buyPrice">进价: ￥ {{goods.buyPrice}}</view>
+				<view class="type" v-if="(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('director')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1)&&goods.buyPrice">进价: ￥ {{goods.buyPrice}}</view>
 				<view class="type">部门: {{goods.deptCode}}</view>
 				<view class="type">PLU: {{goods.pluCode}}</view>
 			</view>
@@ -33,13 +33,13 @@
 				</view>
 			</view>
 		</view>
-		<view v-if="(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1||this.roles.indexOf('group')>-1)&&goods.hasOwnProperty('stock')" class="supplier">
+		<view v-if="(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('director')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1||this.roles.indexOf('group')>-1)&&goods.hasOwnProperty('stock')" class="supplier">
 			<view>供应商库存: </view>
 			<view v-for="(item, index) in goods.stock.supplier" :key="index"  class="item">
 				<view class="bottom">
 					<span class="left">[{{item.code}}] {{item.name}}</span>
 					<span class="right">数量: 
-						{{ (this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1)?
+						{{ (this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('director')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1)?
 							item.number:
 							(Number(item.number)>0?"有货":item.number)
 						}}
@@ -81,7 +81,8 @@ export default {
 	},
 	methods: {
 		async GetGoods(code){
-			if (this.branch == ''|| !(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1||this.roles.indexOf('group')>-1)) {
+			this.goods = {}
+			if (this.branch == ''|| !(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('director')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1||this.roles.indexOf('group')>-1)) {
 				await this.chackLocation().then(res=>{
 					this.latitude= res.latitude
 					this.longitude= res.longitude
