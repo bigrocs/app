@@ -1,52 +1,71 @@
 <template>
-<view>
-	<view class="solids-bottom padding-xs flex align-center">
-		<view class="padding">合计:</view>
-		<view class="flex-sub text-center">
-			<view class="solid-bottom text-xxl padding">
-				<text class="text-price text-red">{{(sale / 100).toFixed(2) }}</text>
-			</view>
-		</view>
-	</view>
-	<view class="solids-bottom padding-xs flex align-center">
-		<view class="padding">一楼:</view>
-		<view class="flex-sub text-center">
-			<view class="solid-bottom text-xxl padding">
-				<text class="text-price text-red">{{((Number(sale1)) / 100).toFixed(2) }}</text>
-			</view>
-		</view>
-	</view>
-	<view class="solids-bottom padding-xs flex align-center">
-		<view class="padding">二楼:</view>
-		<view class="flex-sub text-center">
-			<view class="solid-bottom text-xxl padding">
-				<text class="text-price text-red">{{(sale2 / 100).toFixed(2) }}</text>
-			</view>
-		</view>
-	</view>
-	<view class="solids-bottom padding-xs flex align-center">
-		<view class="padding">联营:</view>
-		<view class="flex-sub text-center">
-			<view class="solid-bottom text-xxl padding">
-				<text class="text-price text-red">{{(sale3 / 100).toFixed(2) }}</text>
-			</view>
-		</view>
-	</view>
-	<u-calendar v-model="show" ref="calendar" @change="change" :mode="mode"
-		:start-text="startText" :end-text="endText" :range-color="rangeColor"
-		:range-bg-color="rangeBgColor" :active-bg-color="activeBgColor" :btn-type="btnType"
-	>
-	</u-calendar>
+  <view>
+    <view class="solids-bottom padding-xs flex align-center">
+      <view class="padding">合计:</view>
+	  <text v-bind:class="((sale-lastSale)/lastSale)>0?'text-red':'text-green'"> {{ ((sale-lastSale)/lastSale*100).toFixed(2)+"%" }}</text>
+      <view class="flex-sub text-center">
+        <view class="solid-bottom text-xxl padding">
+          <text class="text-price text-cyan">{{ toThousands((sale / 100).toFixed(2)) }}</text> 
+        </view>
+      </view>
+	  <text class="text-price text-yellow text-xl">{{ toThousands((lastSale / 100).toFixed(2)) }}</text>
+    </view>
+    <view class="solids-bottom padding-xs flex align-center">
+      <view class="padding">一楼:</view>
+	  <text v-bind:class="((sale1-lastSale1)/lastSale1)>0?'text-red':'text-green'">{{ ((sale1-lastSale1)/lastSale1*100).toFixed(2)+"%" }}</text>
+      <view class="flex-sub text-center">
+        <view class="solid-bottom text-xxl padding">
+          <text class="text-price text-cyan">{{toThousands((Number(sale1) / 100).toFixed(2))}}</text>
+        </view>
+      </view>
+	  <text class="text-price text-yellow text-xl">{{toThousands((Number(lastSale1) / 100).toFixed(2))}}</text>
+    </view>
+    <view class="solids-bottom padding-xs flex align-center">
+      <view class="padding">二楼:</view>
+	  <text v-bind:class="((sale2-lastSale2)/lastSale2)>0?'text-red':'text-green'">{{ ((sale2-lastSale2)/lastSale2*100).toFixed(2)+"%" }}</text>
+      <view class="flex-sub text-center">
+        <view class="solid-bottom text-xxl padding">
+          <text class="text-price text-cyan">{{toThousands((sale2 / 100).toFixed(2))}}</text>
+        </view>
+      </view>
+	  <text class="text-price text-yellow text-xl">{{toThousands((lastSale2 / 100).toFixed(2))}}</text>
+    </view>
+    <view class="solids-bottom padding-xs flex align-center">
+      <view class="padding">联营:</view>
+	  <text v-bind:class="((sale3-lastSale3)/lastSale3)>0?'text-red':'text-green'">{{ ((sale3-lastSale3)/lastSale3*100).toFixed(2)+"%" }}</text>
+      <view class="flex-sub text-center">
+        <view class="solid-bottom text-xxl padding">
+          <text class="text-price text-cyan">{{toThousands((sale3 / 100).toFixed(2))}}</text>
+        </view>
+      </view>
+	  <text class="text-price text-yellow text-xl">{{toThousands((lastSale3 / 100).toFixed(2))}}</text>
+    </view>
+    <u-calendar
+      v-model="show"
+      ref="calendar"
+      @change="change"
+      :mode="mode"
+      :start-text="startText"
+      :end-text="endText"
+      :range-color="rangeColor"
+      :range-bg-color="rangeBgColor"
+      :active-bg-color="activeBgColor"
+      :btn-type="btnType"
+    >
+    </u-calendar>
 
-	<view class="solids-bottom padding-xs flex align-center" @click="showCalendar">
-		<view class="flex-sub text-center">
-			<view class="solid-bottom text-xl padding">
-				<text class="text-black text-bold">日期: {{result}}</text>
-			</view>
-		</view>
-	</view>
-	<u-top-tips ref="uTips"></u-top-tips>
-</view>
+    <view
+      class="solids-bottom padding-xs flex align-center"
+      @click="showCalendar"
+    >
+      <view class="flex-sub text-center">
+        <view class="solid-bottom text-xl padding">
+          <text class="text-black text-bold">日期: {{ result }}</text>
+        </view>
+      </view>
+    </view>
+    <u-top-tips ref="uTips"></u-top-tips>
+  </view>
 </template>
 
 <script>
@@ -63,13 +82,18 @@
 				rangeBgColor: 'rgba(41,121,255,0.13)',
 				activeBgColor: '#2979ff',
 				btnType: 'primary',
-				
-                sale:0.00,
+				// 今年售额
+				sale:0.00,
 				sale1:0.00,
 				sale2:0.00,
 				sale3:0.00,
 				startDate:this.today(-3600 * 1000 * 24),
 				endDate:this.today(-1),
+				// 去年售额
+				lastSale:0.00,
+				lastSale1:0.00,
+				lastSale2:0.00,
+				lastSale3:0.00,
 			}
 		},
 		created() {
@@ -99,6 +123,23 @@
 						type: 'error'
 					});
 				})
+				//去年
+				this.$u.api.DepartmentSale({
+					startDate: parseTime(this.lastToday(this.startDate),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					endDate:  parseTime(this.lastToday(this.endDate),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					// where:"DepCode> 100 AND DepCode< 200",
+					database: 'chunliang'
+				}).then(res=>{
+					this.lastSale = res.total
+				}).catch(err=>{
+					let message = err.data.detail?err.data.detail:err.data
+					this.$refs.uTips.show({
+						duration: 5000,
+						title: message,
+						type: 'error'
+					});
+				})
+
 			},
 			getSale1(){
 				this.$u.api.DepartmentSale({
@@ -108,6 +149,22 @@
 					database: 'chunliang'
 				}).then(res=>{
 					this.sale1 = res.total
+				}).catch(err=>{
+					let message = err.data.detail?err.data.detail:err.data
+					this.$refs.uTips.show({
+						duration: 5000,
+						title: message,
+						type: 'error'
+					});
+				})
+				// 去年
+				this.$u.api.DepartmentSale({
+					startDate: parseTime(this.lastToday(this.startDate),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					endDate:  parseTime(this.lastToday(this.endDate),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					where:"DepCode> 100 AND DepCode< 210",
+					database: 'chunliang'
+				}).then(res=>{
+					this.lastSale1 = res.total
 				}).catch(err=>{
 					let message = err.data.detail?err.data.detail:err.data
 					this.$refs.uTips.show({
@@ -133,6 +190,22 @@
 						type: 'error'
 					});
 				})
+				// 去年
+				this.$u.api.DepartmentSale({
+					startDate: parseTime(this.lastToday(this.startDate),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					endDate:  parseTime(this.lastToday(this.endDate),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					where:"DepCode> 210 AND DepCode< 500",
+					database: 'chunliang'
+				}).then(res=>{
+					this.lastSale2 = res.total
+				}).catch(err=>{
+					let message = err.data.detail?err.data.detail:err.data
+					this.$refs.uTips.show({
+						duration: 5000,
+						title: message,
+						type: 'error'
+					});
+				})
 			},
 			getSale3(){
 				this.$u.api.DepartmentSale({
@@ -150,14 +223,22 @@
 						type: 'error'
 					});
 				})
-			},
-			// 今天的 0点 可以加减
-			today(time = 0) {
-				return new Date(this.dateTime() + time)
-			},
-			// 获取选择时间当前时区0点
-			dateTime() {
-				return new Date(new Date().toLocaleDateString()).getTime()
+				// 去年
+				this.$u.api.DepartmentSale({
+					startDate: parseTime(this.lastToday(this.startDate),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					endDate:  parseTime(this.lastToday(this.endDate),"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
+					where:"DepCode> 700 AND DepCode< 800",
+					database: 'chunliang'
+				}).then(res=>{
+					this.lastSale3 = res.total
+				}).catch(err=>{
+					let message = err.data.detail?err.data.detail:err.data
+					this.$refs.uTips.show({
+						duration: 5000,
+						title: message,
+						type: 'error'
+					});
+				})
 			},
 			showCalendar(){
 				this.show = true
@@ -167,11 +248,38 @@
 				this.startDate = new Date(new Date(e.startDate).toLocaleDateString())
 				this.endDate = new Date(new Date(new Date(e.endDate).toLocaleDateString()).getTime()+3600 * 1000 * 24-1)
 				this.getData()
-			}
+			},
+			// 去年的今天可以加减
+			lastToday(today) {
+				const day = new Date(today) // 防止深拷贝
+				return new Date(day.setMonth(
+					day.getMonth() - 12
+				))
+			},
+			// 今天的 0点 可以加减
+			today(time = 0) {
+				return new Date(this.dateTime() + time)
+			},
+			// 获取选择时间当前时区0点
+			dateTime() {
+				return new Date(new Date().toLocaleDateString()).getTime()
+			},
+			toThousands(s,n) {
+				n = n > 0 && n <= 20 ? n : 2;  
+				s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";  
+				let l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];  
+				let t = "";  
+				for (let i = 0; i < l.length; i++) {  
+					t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");  
+				}  
+				return t.split("").reverse().join("") + "." + r;  
+			},
 		},
 	}
 </script>
 
 <style>
-
+.padding{
+	padding:10rpx;
+}
 </style>
