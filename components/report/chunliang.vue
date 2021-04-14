@@ -104,7 +104,7 @@
 				this.$u.api.DepartmentSale({
 					startDate: parseTime(this.startDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					endDate:  parseTime(this.endDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
-					where:"DepCode> 100 AND DepCode< 200",
+					where:"DepCode> 100 AND DepCode< 210",
 					database: 'chunliang'
 				}).then(res=>{
 					this.sale1 = res.total
@@ -121,7 +121,7 @@
 				this.$u.api.DepartmentSale({
 					startDate: parseTime(this.startDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
 					endDate:  parseTime(this.endDate,"{y}-{m}-{d}T{h}:{i}:{s}+08:00"),
-					where:"DepCode> 200 AND DepCode< 500",
+					where:"DepCode> 210 AND DepCode< 500",
 					database: 'chunliang'
 				}).then(res=>{
 					this.sale2 = res.total

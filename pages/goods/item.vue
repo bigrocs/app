@@ -128,6 +128,14 @@ export default {
 					break;
 			}
 			let item = this.checkCode(code)
+			if (item.pluCode===''&&item.barCode==='') {
+				this.$refs.uTips.show({
+					duration: 5000,
+					title: "输入信息不允许为空",
+					type: 'warning'
+				});
+				return 
+			}
 			await this.$u.api.GetGoods({
 				item:item,
 				database: this.branch
