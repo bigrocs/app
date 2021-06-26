@@ -9,7 +9,8 @@ const login = {
         return new Promise((resolve, reject) => {
             this.uniLogin('weixin').then(res=>{
                 if (res.errMsg === "login:ok") {
-                    this.socialitesAuth( res.code,'miniprogram_wechat').then(res => {
+                    const client_id = uni.getAccountInfoSync().miniProgram.appId;
+                    this.socialitesAuth( res.code,'miniprogram_wechat',client_id).then(res => {
                         resolve(res)
                     }).catch(err => {
                         reject(err)
@@ -23,9 +24,9 @@ const login = {
         })
     },
     // 社会登录授权
-    socialitesAuth(code, driver) {
+    socialitesAuth(code, driver, client_id) {
         return new Promise((resolve, reject) => {
-            this.api.SocialitesAuth({ code, driver }).then(res => {
+            this.api.SocialitesAuth({ code, driver, client_id }).then(res => {
                 resolve(res)
             }).catch(err => {
                 reject(err)

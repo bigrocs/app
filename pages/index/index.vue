@@ -34,6 +34,8 @@
 		onLoad() {
 			this.init()
 		},
+		onReady() {
+		},
 		methods: {
 			init() {
 				if (!uni.getStorageSync('token')) {
