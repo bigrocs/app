@@ -6,7 +6,7 @@
 			<input focus class="u-border-bottom" type="number" v-model="mobile" maxlength="11" placeholder="请输入手机号" />
 			<view class="tips">未注册的手机号验证后自动创建系统账号</view>
             <!-- #ifdef MP-WEIXIN || MP-QQ || MP-BAIDU -->
-			<button open-type="getUserInfo" @getuserinfo="submit" :style="[inputStyle]" class="getCaptcha">获取短信验证码</button>
+			<button @click="submit" :style="[inputStyle]" class="getCaptcha">获取短信验证码</button>
 			<!-- #endif -->
             <!-- #ifndef MP-WEIXIN || MP-QQ || MP-BAIDU -->
 			<button @tap="submit" :style="[inputStyle]" class="getCaptcha">获取短信验证码</button>
@@ -58,7 +58,12 @@ export default {
 	methods: {
 		submit(res) {
 			// #ifdef MP-WEIXIN || MP-QQ || MP-BAIDU 
-			uni.setStorageSync('userInfo',res.detail.userInfo)
+			uni.getUserProfile({
+				desc: "用于完善会员资料",
+				success:res => {
+					uni.setStorageSync('userInfo',res.userInfo)
+				}
+			})
 			// #endif
 			if(this.$u.test.mobile(this.mobile)) {
 				this.$u.route({
