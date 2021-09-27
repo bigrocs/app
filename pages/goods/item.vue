@@ -46,6 +46,7 @@
 					</span>
 				</view>
 			</view>	
+			<view>商品状态: {{ getStatus(goods.status) }}</view>
 		</view>
 		<view class="bot">
 			<view>门店: {{branchName}}</view>
@@ -80,6 +81,14 @@ export default {
 		]),
 	},
 	methods: {
+		getStatus(status) {
+			switch (status) {
+				case "1":
+					return "正常"
+				default:
+					return "禁用[" + status +"]"
+			}
+		},
 		async GetGoods(code){
 			this.goods = {}
 			if (this.branch == ''|| !(this.roles.indexOf('root')>-1||this.roles.indexOf('manager')>-1||this.roles.indexOf('director')>-1||this.roles.indexOf('finance')>-1||this.roles.indexOf('store_keeper')>-1||this.roles.indexOf('group')>-1)) {
