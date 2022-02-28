@@ -126,6 +126,8 @@ export default {
   methods: {
     getStatus(status) {
       switch (status) {
+        case "0":
+          return "正常";
         case "1":
           return "正常";
         default:
