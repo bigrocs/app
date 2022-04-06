@@ -220,7 +220,7 @@ export default {
         .then((res) => {
           if (res.valid) {
             this.goods = res.item;
-            if (this.goods.status != "1") {
+            if (this.goods.status != "1" && this.goods.status != "0") {
               uni.showToast({
                 duration: 5000,
                 icon: "error",
